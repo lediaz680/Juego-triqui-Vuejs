@@ -1,0 +1,78 @@
+#vista-juego{
+    width: 500px;
+    margin: 0 auto;
+    border: 1px solid #000;
+}
+
+#informacion{
+    padding: 15px;
+    font-family: sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background: #eee;   
+    box-sizing: border-box;
+}
+
+#cuadrados{
+    height: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.cuadrado{
+    width: 33.33%;
+    height: 33.33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    font-family: cursive;
+    font-size: 50px;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid #000;
+}
+
+.cuadrado.highlighted {
+    color: teal;
+}
+.cuadrado:hover{
+    background-color: #eee;
+}
+
+.cuadrado:nth-child(-n + 6){
+    border-bottom: 15px solid lightblue;
+}
+.cuadrado:nth-child(3n + 1),
+.cuadrado:nth-child(3n +2){
+    border-bottom: 15px solid rgb(18, 35, 41);
+
+}
+
+.turno-item{
+    font-size: 35px;
+    transition: .1s linear;
+    animation: animacion 1s linear 1s infinite alternate;
+}
+
+@keyframes animacion{
+    from {
+        font-size: 35px;
+        color: teal;
+    }
+    to {
+        font-size: 40px;
+        
+    }
+}
+
+.iconoCaballlo{
+    color: azure;
+}
+.iconoReina{
+    color: red;
+}

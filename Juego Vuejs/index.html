@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <!-- notificaciones -->
+    <link rel="stylesheet" href="librerias/Notiflix-main/dist/notiflix-3.2.4.min.css" />
+    <!-- ICONOS FONTAWESOME 4.7-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- TAILWINDCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Juego VueJS</title>
+</head>
+
+<body>
+    <div class="md:container md:mx-auto">
+
+        <div class="flex flex-row">
+            <button class="basis-1/4 bg-cyan-500 hover:bg-cyan-600 p-3 text-slate-50"
+                onClick="location.reload(true)">Reinicar Juego</button>
+
+            <button class="basis-1/4 bg-orange-500 hover:bg-orange-600 p-3 text-slate-50"
+                onclick="activarJuego.deshacerMovimiento()">Deshacer Ultimo Movimiento</button>
+
+            <button class="basis-1/4 bg-rose-500 hover:bg-rose-600 p-3 text-slate-50">Deshacer Muchos
+                Movimiento</button>
+        </div>
+        <div id="vista-juego">
+            <button></button>
+            <div id="informacion">
+                <div class="jugadores">
+                    <h6>Jugadores</h6>
+                    <i class="fa-solid fa-chess " id="IconoReina"></i> -
+                    <i class="fa-solid fa-chess-knight" id="IconoCaballo"></i>
+                </div>
+                Turno
+                <span v-if="infoMessage === 'O'" class="iconoCaballo turno-item"><i
+                        class="fa-solid fa-chess"></i></span>
+                <span v-if="infoMessage === 'X'" class="iconoReina turno-item"><i
+                        class="fa-solid fa-chess-knight"></i></span>
+                <hr>
+                <span
+                    class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                    Movimientos: {{Movimientos}}</span>
+               
+            </div>
+            <div id="cuadrados">
+                <div v-for="(cuadrado, i) in cuadrados" v-on:click="activaJuego(i)"
+                    v-bind:class="{highlighted: cuadrado.isHighLighted}" class="cuadrado">
+
+                    <span v-if="cuadrado.value === 'O'"><i class="fa-solid fa-chess "></i></span>
+                    <span v-if="cuadrado.value === 'X'"><i class="fa-solid fa-chess-knight"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="js/jquery.js"></script>
+    <script src="https://kit.fontawesome.com/63a63a931e.js" crossorigin="anonymous"></script>
+    <script src="librerias/Notiflix-main/dist/notiflix-3.2.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="js/Cuadrado.js"></script>
+    <script src="js/Juego.js"></script>
+    <script type="text/javascript">
+
+
+        function reiniciarJuego() {
+            setTimeout(function () {
+                location.reload(true);
+            }, 2000);
+
+        }
+        const activarJuego = new Juego();
+
+        const vistaJuego = new Vue({
+            el: '#vista-juego',
+            data: activarJuego,
+
+            methods: {
+                activaJuego: function (i) {
+                    activarJuego.makeMove(i);
+                }
+            },
+            computed: {
+                infoMessage: function () {
+                    if (this.inProgress) {
+                        return this.currentTurn
+                    }
+
+                    if (this.winner) {
+                        if (this.winner === 'O') {
+                            Notiflix.Loading.custom('Felicidades has ganado', {
+                                customSvgCode: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M74.01 208h-10c-8.875 0-16 7.125-16 16v16c0 8.875 7.122 16 15.1 16h16c-.25 43.13-5.5 86.13-16 128h128c-10.5-41.88-15.75-84.88-16-128h15.1c8.875 0 16-7.125 16-16L208 224c0-8.875-7.122-16-15.1-16h-10l33.88-90.38C216.6 115.8 216.9 113.1 216.9 112.1C216.9 103.1 209.5 96 200.9 96H144V64h16c8.844 0 16-7.156 16-16S168.9 32 160 32h-16l.0033-16c0-8.844-7.16-16-16-16s-16 7.156-16 16V32H96.01c-8.844 0-16 7.156-16 16S87.16 64 96.01 64h16v32H55.13C46.63 96 39.07 102.8 39.07 111.9c0 1.93 .3516 3.865 1.061 5.711L74.01 208zM339.9 301.8L336.6 384h126.8l-3.25-82.25l24.5-20.75C491.9 274.9 496 266 496 256.5V198C496 194.6 493.4 192 489.1 192h-26.37c-3.375 0-6 2.625-6 6V224h-24.75V198C432.9 194.6 430.3 192 426.9 192h-53.75c-3.375 0-6 2.625-6 6V224h-24.75V198C342.4 194.6 339.8 192 336.4 192h-26.38C306.6 192 304 194.6 304 198v58.62c0 9.375 4.125 18.25 11.38 24.38L339.9 301.8zM384 304C384 295.1 391.1 288 400 288S416 295.1 416 304v32h-32V304zM247.1 459.6L224 448v-16C224 423.1 216.9 416 208 416h-160C39.13 416 32 423.1 32 432V448l-23.12 11.62C3.375 462.3 0 467.9 0 473.9V496C0 504.9 7.125 512 16 512h224c8.875 0 16-7.125 16-16v-22.12C256 467.9 252.6 462.3 247.1 459.6zM503.1 459.6L480 448v-16c0-8.875-7.125-16-16-16h-128c-8.875 0-16 7.125-16 16V448l-23.12 11.62C291.4 462.3 288 467.9 288 473.9V496c0 8.875 7.125 16 16 16h192c8.875 0 16-7.125 16-16v-22.12C512 467.9 508.6 462.3 503.1 459.6z"/></svg>',
+                            });
+
+                            reiniciarJuego()
+
+                        } else {
+                            Notiflix.Loading.custom('Felicidades has ganado', {
+                                customSvgCode: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M19 272.5l40.62 18C63.78 292.3 68.25 293.3 72.72 293.3c4 0 8.001-.7543 11.78-2.289l12.75-5.125c9.125-3.625 16-11.12 18.75-20.5L125.2 234.8C127 227.9 131.5 222.2 137.9 219.1L160 208v50.38C160 276.5 149.6 293.1 133.4 301.2L76.25 329.9C49.12 343.5 32 371.1 32 401.5V416h319.9l-.0417-192c0-105.1-85.83-192-191.8-192H12C5.375 32 0 37.38 0 44c0 2.625 .625 5.25 1.75 7.625L16 80L7 89C2.5 93.5 0 99.62 0 106V243.2C0 255.9 7.5 267.4 19 272.5zM52 128C63 128 72 137 72 148S63 168 52 168S32 159 32 148S41 128 52 128zM336 448H47.1C21.49 448 0 469.5 0 495.1C0 504.8 7.163 512 16 512h352c8.837 0 16-7.163 16-16C384 469.5 362.5 448 336 448z"/></svg>',
+
+                            });
+                            reiniciarJuego()
+
+                        }
+
+                    }
+
+                    if (!this.winner && !this.inProgress) {
+                        Notiflix.Notify.failure('No ha habido ningún Ganador, Empezando de nuevo en 2 segundos');
+                        Notiflix.Loading.standard('Epere un momento por favor');
+                        reiniciarJuego()
+
+                    }
+                },
+                Movimientos: function () {
+                    return this.movesMade
+                }
+            }
+
+        });
+    </script>
+</body>
+
+</html>
