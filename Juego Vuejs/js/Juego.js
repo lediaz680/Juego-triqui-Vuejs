@@ -34,7 +34,10 @@ class Juego {
     makeMove(i) {
 
         if (this.inProgress && !this.cuadrados[i].value) {
-            this.cuadrados[i].value = this.currentTurn;
+
+            this.cuadrados[i].value = this.currentTurn; //colocando el valor en el cuadrado
+            //ASGINAR EL MOVIENTO ANTERIOR AL CUDRADO ANTERIOR 
+            this.previusMove = this.cuadrados[i];
             this.movesMade++;
             this.checkForWinner();
             this.currentTurn = (this.currentTurn === Juego.O) ? Juego.X : Juego.O;
