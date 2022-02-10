@@ -1,25 +1,40 @@
 class Juego {
 
     constructor() {
+        this.previusMove = null;
+        this.backMove = false;
         this.inProgress = true;
         this.winner = null; // O o X
         this.currentTurn = Juego.O; // O o X
         this.movesMade = 0;
         this.cuadrados = new Array(9).fill().map(c => new Cuadrado());
     }
+    //OBTIENE EL CUADRADO PULSADO
+    getCuadradoPulsado(cuadradoPulsado) {
+        this.previusMove = cuadradoPulsado;
+    }
 
     deshacerMovimiento() {
+
+        this.backMove = true;
+        this.cuadrados[this.previusMove].value = null
+        this.movesMade--;
+
         if (this.currentTurn === 'O') {
             this.currentTurn = 'X'
         } else {
             this.currentTurn = 'O'
+
         }
+
+
+
     }
     //REALIZAR MOVIDA
     makeMove(i) {
+
         if (this.inProgress && !this.cuadrados[i].value) {
             this.cuadrados[i].value = this.currentTurn;
-           
             this.movesMade++;
             this.checkForWinner();
             this.currentTurn = (this.currentTurn === Juego.O) ? Juego.X : Juego.O;

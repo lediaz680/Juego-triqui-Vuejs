@@ -24,9 +24,9 @@
                 onClick="location.reload(true)">Reinicar Juego</button>
 
             <button class="basis-1/4 bg-orange-500 hover:bg-orange-600 p-3 text-slate-50"
-                onclick="activarJuego.deshacerMovimiento()">Deshacer Ultimo Movimiento</button>
+                onclick="activarJuego.deshacerMovimiento()" disabled>Deshacer Ultimo Movimiento</button>
 
-            <button class="basis-1/4 bg-rose-500 hover:bg-rose-600 p-3 text-slate-50">Deshacer Muchos
+            <button class="basis-1/4 bg-rose-500 hover:bg-rose-600 p-3 text-slate-50" disabled>Deshacer Muchos
                 Movimiento</button>
         </div>
         <div id="vista-juego">
@@ -46,14 +46,14 @@
                 <span
                     class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
                     Movimientos: {{Movimientos}}</span>
-               
+
             </div>
             <div id="cuadrados">
-                <div v-for="(cuadrado, i) in cuadrados" v-on:click="activaJuego(i)"
+                <div v-for="(cuadrado, i) in cuadrados" @click="activaJuego(i); enviarCuadradoPulsado(i)"
                     v-bind:class="{highlighted: cuadrado.isHighLighted}" class="cuadrado">
-
                     <span v-if="cuadrado.value === 'O'"><i class="fa-solid fa-chess "></i></span>
                     <span v-if="cuadrado.value === 'X'"><i class="fa-solid fa-chess-knight"></i></span>
+
                 </div>
             </div>
         </div>
@@ -86,7 +86,12 @@
             methods: {
                 activaJuego: function (i) {
                     activarJuego.makeMove(i);
-                }
+                },
+                enviarCuadradoPulsado: function (i) {
+                    activarJuego.getCuadradoPulsado(i);
+                },
+               
+
             },
             computed: {
                 infoMessage: function () {
