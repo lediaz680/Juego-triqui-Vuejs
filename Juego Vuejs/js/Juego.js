@@ -8,10 +8,19 @@ class Juego {
         this.currentTurn = Juego.O; // O o X
         this.movesMade = 0;
         this.cuadrados = new Array(9).fill().map(c => new Cuadrado());
+        this.arrayMovientosAnteriores = []
+        this.arrayTurno = []
     }
+
     //OBTIENE EL CUADRADO PULSADO
     getCuadradoPulsado(cuadradoPulsado) {
         this.previusMove = cuadradoPulsado;
+
+        //lleno el array con los cuadrados pulsados anteriores
+        this.arrayMovientosAnteriores.push(this.previusMove)
+        this.arrayTurno.push(this.currentTurn)
+        // console.log(this.arrayMovientosAnteriores)
+        document.getElementById('btnBackMove').disabled = false
     }
 
     deshacerMovimiento() {
@@ -20,16 +29,15 @@ class Juego {
         this.cuadrados[this.previusMove].value = null
         this.movesMade--;
 
+
         if (this.currentTurn === 'O') {
             this.currentTurn = 'X'
         } else {
             this.currentTurn = 'O'
 
         }
-
-
-
     }
+   
     //REALIZAR MOVIDA
     makeMove(i) {
 
